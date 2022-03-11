@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Conta implements IConta{
     private static final int AGENCIA_PADRAO = 1;
     private static int sequencial = 1;
@@ -5,6 +8,7 @@ public class Conta implements IConta{
     protected int agencia = AGENCIA_PADRAO;
     protected int nrConta;
     protected double saldo;
+    private List<String> movimentacao = new ArrayList<String>();
     private Cliente cliente;
 
     public Conta(Cliente cliente){
@@ -14,14 +18,14 @@ public class Conta implements IConta{
 
     @Override
     public void sacar(double valor) {
-        saldo -= valor;
-        System.out.println("Sacou R$" + valor + " da conta: " + nrConta);
+        this.saldo -= valor;
+        this.movimentacao.add("Débito de R$" + valor);
     }
 
     @Override
     public void depositar(double valor) {
-        saldo += valor;
-        System.out.println("Depositou R$" + valor + " na conta: " + nrConta);
+        this.saldo += valor;
+        this.movimentacao.add("Crédito de R$" + valor);
     }
 
     @Override
@@ -31,18 +35,24 @@ public class Conta implements IConta{
     }
 
     @Override
+    public void imprimirSaldoConta() {
+        System.out.println(String.format("Saldo: R$%.2f", this.saldo));
+    }
+
+    @Override
     public void imprimirExtrato() {
+        for (String movimento:
+                movimentacao) {
+            System.out.println(movimento);
+        }
+        imprimirSaldoConta();
     }
 
     public void imprimirInfoComuns(){
-        System.out.println("Cliente: " + this.cliente.getNome());
-        System.out.println("CPF: " + this.cliente.getCpf());
-        System.out.println("Agência: " + this.agencia);
-        System.out.println("Nr. Conta: " + this.nrConta);
-        System.out.printf("Saldo: %.2f", saldo);
-        System.out.println();
+        cliente.imprimirDadosCliente();
+        System.out.println(String.format("Agência: %d", this.agencia));
+        System.out.println(String.format("Nr. Conta: %d", this.nrConta));
     }
-
 
     public int getAgencia() {
         return agencia;
@@ -54,5 +64,9 @@ public class Conta implements IConta{
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public List<String> getMovimentacao() {
+        return movimentacao;
     }
 }

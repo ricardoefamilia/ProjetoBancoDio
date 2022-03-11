@@ -4,6 +4,15 @@ public class Cliente {
     private String telefone;
     private String email;
 
+    public void imprimirDadosCliente(){
+        System.out.println();
+        System.out.println("*** Dados do Cliente ***");
+        System.out.println("Titular: " + this.nome);
+        System.out.println("CPF: " + this.cpf);
+        System.out.println("Telefone: " + this.telefone);
+        System.out.println("E-Mail: " + this.email);
+    }
+
     public String getNome() {
         return nome;
     }
